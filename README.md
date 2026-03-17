@@ -1,4 +1,4 @@
-# UX Cultural Evaluator
+# UX Evaluación de Alineación Cultural
 
 Sistema para evaluar sitios web utilizando:
 
