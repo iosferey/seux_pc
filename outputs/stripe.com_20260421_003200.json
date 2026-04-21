@@ -1,0 +1,55 @@
+{
+  "ICH": 0.8,
+  "IAC": 0.7597999999999999,
+  "IVS": 0.9437206633983519,
+  "Brecha": -0.040200000000000125,
+  "transferencia_cultural": 1.0,
+  "pais_origen": "MX",
+  "pais_objetivo": "MX",
+  "visual_analysis": {
+    "typography": {
+      "font_families": [],
+      "font_count": 0,
+      "heading_structure": {
+        "h1": 2,
+        "h2": 5,
+        "h3": 25,
+        "h4": 24,
+        "h5": 0,
+        "h6": 0
+      },
+      "total_headings": 56
+    },
+    "color": {
+      "palette": [
+        "#f4ebef",
+        "#121846",
+        "#5a4ed0",
+        "#949ccd",
+        "#eb509d",
+        "#6a748b"
+      ],
+      "color_count": 6
+    },
+    "layout": {
+      "total_elements": 2399,
+      "text_length": 16774,
+      "visual_density": 0.14301043219076007,
+      "whitespace_ratio": 0.8748826535934077
+    },
+    "components": {
+      "navbar_count": 1,
+      "footer_count": 1,
+      "button_count": 29,
+      "form_count": 0,
+      "card_count": 468
+    }
+  },
+  "heuristics": {
+    "A_control_jerarquia": 4,
+    "B_lenguaje_modelos": 4,
+    "C_cognicion_memoria": 4,
+    "D_eficiencia_tiempo": 4,
+    "E_error_riesgo": 4
+  }
+}

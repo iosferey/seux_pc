@@ -1,0 +1,16 @@
+HEURISTIC_CATEGORIES = [
+    "A_control_jerarquia",
+    "B_lenguaje_modelos",
+    "C_cognicion_memoria",
+    "D_eficiencia_tiempo",
+    "E_error_riesgo"
+]
+
+CULTURAL_DIMENSIONS = [
+    "DP",
+    "IND",
+    "EI",
+    "OLP",
+    "LCS",
+    "OGI"
+]
