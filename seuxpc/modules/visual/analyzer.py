@@ -14,7 +14,10 @@ class VisualAnalyzer:
 
     def load(self):
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
+            browser = p.chromium.launch(
+                headless=True,
+                args=["--no-sandbox", "--disable-setuid-sandbox"]
+            )
             page = browser.new_page(viewport={"width": 1366, "height": 768})
 
             page.goto(self.url, wait_until="networkidle")
