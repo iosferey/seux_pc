@@ -13,10 +13,11 @@ from seuxpc.config.hofstede import HOFSTEDE
 
 class SEUXPC:
 
-    def __init__(self, url, target_country, api_key):
+    def __init__(self, url, target_country, api_key, enable_recommendations=True):
         self.url = url
         self.target_country = target_country
         self.api_key = api_key
+        self.enable_recommendations = enable_recommendations
 
     def run(self):
 
@@ -99,6 +100,7 @@ class SEUXPC:
         # ---------------------------
         # 10. RECOMENDACIONES DE MEJORA
         # ---------------------------
-        result["recomendaciones"] = HeuristicRecommender(self.api_key).generate(result)
+        if self.enable_recommendations:
+            result["recomendaciones"] = HeuristicRecommender(self.api_key).generate(result)
 
         return result

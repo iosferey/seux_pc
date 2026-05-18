@@ -40,7 +40,8 @@ def run_batch():
             model = SEUXPC(
                 url=url,
                 target_country=TARGET_COUNTRY,
-                api_key=API_KEY
+                api_key=API_KEY,
+                enable_recommendations=False
             )
 
             result = model.run()
