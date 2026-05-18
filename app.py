@@ -25,7 +25,8 @@ def analyze(data: RequestModel):
     model = SEUXPC(
         url=data.url,
         target_country=data.country,
-        api_key=api_key
+        api_key=api_key,
+        enable_recommendations=False
     )
 
     result = model.run()
