@@ -26,7 +26,7 @@ def analyze(data: RequestModel):
         url=data.url,
         target_country=data.country,
         api_key=api_key,
-        enable_recommendations=False
+        enable_recommendations=True
     )
 
     result = model.run()

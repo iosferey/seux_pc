@@ -2,6 +2,7 @@ import os
 import sys
 import argparse
 import importlib
+import json
 
 from pathlib import Path
 
@@ -84,9 +85,7 @@ def main():
     # 4. MOSTRAR RESULTADO
     # ---------------------------
     print("\n📊 RESULTADO:\n")
-    for k, v in result.items():
-        if k not in ["visual_analysis", "heuristics"]:
-            print(f"{k}: {v}")
+    print(json.dumps(result, ensure_ascii=False, indent=2))
 
     # ---------------------------
     # 5. GUARDAR
