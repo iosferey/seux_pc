@@ -25,9 +25,9 @@ class SEUXPC:
         # 1. CARGA Y ANÁLISIS VISUAL
         # ---------------------------
         analyzer = VisualAnalyzer(self.url)
-        html, _ = analyzer.load()
+        html, screenshot = analyzer.load()
 
-        visual_data = analyzer.run_analysis()
+        visual_data = analyzer.run_analysis(html=html, screenshot=screenshot)
 
         # ---------------------------
         # 2. DETECCIÓN DE PAÍS ORIGEN

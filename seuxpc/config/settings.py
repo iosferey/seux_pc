@@ -13,3 +13,6 @@ SCORE_BANDS = {
 	"medio": 0.75,
 	"alto": 1.01
 }
+
+PLAYWRIGHT_NAV_TIMEOUT_MS = 45000
+PLAYWRIGHT_WAIT_UNTIL = "domcontentloaded"
