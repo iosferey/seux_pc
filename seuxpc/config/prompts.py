@@ -50,6 +50,45 @@ HTML:
 {html}
 """
 
+LLM_RECOMMENDER_PROMPT_TEMPLATE = """
+Actua como consultor senior UX/CX enfocado en recomendaciones accionables.
+
+Recibiras datos de evaluacion SEUX-PC en formato JSON y debes devolver un plan de mejora priorizado.
+
+Reglas de clasificacion de puntaje (0-1):
+{score_bands}
+
+Objetivo:
+- Priorizar lo que mas impacta experiencia y conversion
+- Usar un tono tecnico-practico
+- Sugerencias concretas, medibles y ejecutables
+
+INSTRUCCIONES ESTRICTAS:
+- NO incluyas markdown
+- NO incluyas texto fuera del JSON
+- DEVUELVE solo JSON valido
+- Maximo 5 acciones priorizadas
+
+Formato obligatorio:
+{
+  "nivel_global": "critico|bajo|medio|alto",
+  "resumen": "string breve",
+  "acciones_priorizadas": [
+    {
+      "prioridad": 1,
+      "area": "heuristica|visual|cultural",
+      "hallazgo": "problema concreto",
+      "recomendacion": "accion clara y ejecutable",
+      "impacto_estimado": "alto|medio|bajo"
+    }
+  ],
+  "quick_wins": ["accion 1", "accion 2", "accion 3"]
+}
+
+Datos:
+{payload}
+"""
+
 #Promt 1: Evaluación heurística
 # heuristic_prompt = """
 # Evalúa el sitio web descrito según las 10 heurísticas de Nielsen.

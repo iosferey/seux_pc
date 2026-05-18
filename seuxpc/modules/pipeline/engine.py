@@ -1,6 +1,7 @@
 from seuxpc.modules.visual.analyzer import VisualAnalyzer
 from seuxpc.modules.heuristics.llm_evaluator import LLMHeuristicEvaluator
 from seuxpc.modules.heuristics.evaluator import HeuristicEvaluator
+from seuxpc.modules.heuristics.recommender import HeuristicRecommender
 from seuxpc.modules.cultural.integrator import CulturalIntegrator
 from seuxpc.modules.cultural.country_detector import CountryDetector
 from seuxpc.modules.cultural.transfer import CulturalTransfer
@@ -94,5 +95,10 @@ class SEUXPC:
         result["pais_objetivo"] = self.target_country
         result["visual_analysis"] = visual_data
         result["heuristics"] = heuristics
+
+        # ---------------------------
+        # 10. RECOMENDACIONES DE MEJORA
+        # ---------------------------
+        result["recomendaciones"] = HeuristicRecommender(self.api_key).generate(result)
 
         return result
