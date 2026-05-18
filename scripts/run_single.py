@@ -1,5 +1,19 @@
 import os
+import sys
 import argparse
+import importlib
+
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+dotenv_spec = importlib.util.find_spec("dotenv")
+if dotenv_spec is not None:
+    dotenv_module = importlib.import_module("dotenv")
+    dotenv_module.load_dotenv(dotenv_path=PROJECT_ROOT / ".env")
+
 from seuxpc.modules.pipeline.engine import SEUXPC
 from seuxpc.utils.io import save_result_json
 
