@@ -1,3 +1,5 @@
+import argparse
+import csv
 import os
 import time
 import random
@@ -27,19 +29,62 @@ URLS = [
     "https://spotify.com"
 ]
 
-TARGET_COUNTRY = "MX"
 API_KEY = os.getenv("OPENAI_API_KEY")
 
-def run_batch():
-    results = []
 
-    for i, url in enumerate(URLS, start=1):
-        print(f"\n[{i}/{len(URLS)}] Procesando: {url}")
+def get_args():
+    parser = argparse.ArgumentParser(
+        description="Ejecuta el modelo SEUX-PC para un lote de URLs"
+    )
+    parser.add_argument(
+        "--csv",
+        type=str,
+        default=None,
+        help="CSV con una columna 'url'. Filas vacias o con # se ignoran."
+    )
+    parser.add_argument(
+        "--country",
+        type=str,
+        default="MEX",
+        help="Pais objetivo para todo el lote. Usa 'auto' para inferirlo por sitio."
+    )
+    return parser.parse_args()
+
+
+def load_urls_from_csv(path):
+    urls = []
+
+    with open(path, newline="", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f)
+
+        if not reader.fieldnames or "url" not in reader.fieldnames:
+            raise ValueError("El CSV debe incluir una columna llamada 'url'")
+
+        for row in reader:
+            url = (row.get("url") or "").strip()
+
+            if not url or url.startswith("#"):
+                continue
+
+            if not url.startswith("http"):
+                url = "https://" + url
+
+            urls.append(url)
+
+    return urls
+
+
+def run_batch(urls, target_country="MEX"):
+    results = []
+    target_country = None if str(target_country).lower() == "auto" else target_country
+
+    for i, url in enumerate(urls, start=1):
+        print(f"\n[{i}/{len(urls)}] Procesando: {url}")
 
         try:
             model = SEUXPC(
                 url=url,
-                target_country=TARGET_COUNTRY,
+                target_country=target_country,
                 api_key=API_KEY,
                 enable_recommendations=False
             )
@@ -61,4 +106,6 @@ def run_batch():
     print("CSV generado:", csv_path)
 
 if __name__ == "__main__":
-    run_batch()
+    args = get_args()
+    urls = load_urls_from_csv(args.csv) if args.csv else URLS
+    run_batch(urls, target_country=args.country)

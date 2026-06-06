@@ -8,12 +8,12 @@ from seuxpc.modules.cultural.transfer import CulturalTransfer
 from seuxpc.modules.scoring.visual_scorer import VisualScorer
 from seuxpc.modules.scoring.seux_scorer import SEUXScorer
 
-from seuxpc.config.hofstede import HOFSTEDE
+from seuxpc.config.hofstede import HOFSTEDE, get_country_profile, normalize_country_code
 
 
 class SEUXPC:
 
-    def __init__(self, url, target_country, api_key, enable_recommendations=True):
+    def __init__(self, url, target_country=None, api_key=None, enable_recommendations=True):
         self.url = url
         self.target_country = target_country
         self.api_key = api_key
@@ -32,17 +32,23 @@ class SEUXPC:
         # ---------------------------
         # 2. DETECCIÓN DE PAÍS ORIGEN
         # ---------------------------
-        source_country = CountryDetector().detect(html)
+        country_detector = CountryDetector(api_key=self.api_key)
+        source_country = country_detector.detect(html, url=self.url)
 
         if source_country not in HOFSTEDE:
-            source_country = "US"
+            source_country = "USA"
 
         source_culture = HOFSTEDE[source_country]
 
-        if self.target_country not in HOFSTEDE:
+        if self.target_country:
+            target_country = normalize_country_code(self.target_country)
+        else:
+            target_country = source_country
+
+        if not get_country_profile(target_country):
             raise ValueError(f"País objetivo no soportado: {self.target_country}")
 
-        target_culture = HOFSTEDE[self.target_country]
+        target_culture = HOFSTEDE[target_country]
 
         # ---------------------------
         # 3. EVALUACIÓN HEURÍSTICA (LLM)
@@ -93,7 +99,9 @@ class SEUXPC:
         # ---------------------------
         result["transferencia_cultural"] = transfer
         result["pais_origen"] = source_country
-        result["pais_objetivo"] = self.target_country
+        result["pais_origen_nombre"] = source_culture.get("country")
+        result["pais_objetivo"] = target_country
+        result["pais_objetivo_nombre"] = target_culture.get("country")
         result["visual_analysis"] = visual_data
         result["heuristics"] = heuristics
 

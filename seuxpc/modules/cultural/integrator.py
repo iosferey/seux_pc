@@ -1,4 +1,5 @@
 from seuxpc.config.constants import HEURISTIC_CATEGORIES, CULTURAL_DIMENSIONS
+from seuxpc.config.hofstede import get_dimension_value
 from seuxpc.config.sensitivity_matrix import SENSITIVITY_MATRIX
 
 class CulturalIntegrator:
@@ -12,7 +13,7 @@ class CulturalIntegrator:
         for h in HEURISTIC_CATEGORIES:
 
             influence = sum(
-                SENSITIVITY_MATRIX.loc[h, c] * self.Cj[c]
+                SENSITIVITY_MATRIX.loc[h, c] * get_dimension_value(self.Cj, c)
                 for c in CULTURAL_DIMENSIONS
             )
 

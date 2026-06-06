@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from typing import Optional
 import os
 
 from seuxpc.modules.pipeline.engine import SEUXPC
@@ -9,7 +10,7 @@ app = FastAPI()
 
 class RequestModel(BaseModel):
     url: str
-    country: str = "MX"
+    country: Optional[str] = None
 
 
 @app.get("/")

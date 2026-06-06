@@ -33,8 +33,8 @@ def get_args():
     parser.add_argument(
         "--country",
         type=str,
-        default="MX",
-        help="País objetivo (default: MX)"
+        default=None,
+        help="País objetivo por código o nombre; si se omite, se infiere"
     )
 
     parser.add_argument(
