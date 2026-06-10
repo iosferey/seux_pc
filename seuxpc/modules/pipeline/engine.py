@@ -76,8 +76,18 @@ class SEUXPC:
         # ---------------------------
         # 5. AJUSTE CULTURAL (IAC)
         # ---------------------------
-        adjusted = CulturalIntegrator(target_culture).adjust(heuristics)
+        integrator = CulturalIntegrator(target_culture)
+        adjusted = integrator.adjust(heuristics)
         ux_c = sum(adjusted.values()) / len(adjusted)
+
+        heuristics_norm = {
+            key: max(0.0, min(1.0, (float(value) - 1.0) / 4.0))
+            for key, value in heuristics.items()
+        }
+        ux_norm = sum(heuristics_norm.values()) / len(heuristics_norm)
+
+        adjusted_norm = integrator.adjust_normalized(heuristics)
+        ux_c_norm = sum(adjusted_norm.values()) / len(adjusted_norm)
 
         # ---------------------------
         # 6. TRANSFERENCIA CULTURAL
@@ -92,7 +102,7 @@ class SEUXPC:
         # ---------------------------
         # 8. SCORING FINAL
         # ---------------------------
-        result = SEUXScorer().compute(ux, ux_c, ivs)
+        result = SEUXScorer().compute(ux, ux_c, ivs, ux_norm=ux_norm, ux_c_norm=ux_c_norm)
 
         # ---------------------------
         # 9. METADATOS
@@ -104,6 +114,7 @@ class SEUXPC:
         result["pais_objetivo_nombre"] = target_culture.get("country")
         result["visual_analysis"] = visual_data
         result["heuristics"] = heuristics
+        result["heuristics_norm"] = heuristics_norm
 
         # ---------------------------
         # 10. RECOMENDACIONES DE MEJORA

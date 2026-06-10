@@ -123,10 +123,15 @@ Campos principales del JSON:
 
 ```json
 {
+  "scoring_version": "v2",
   "ICH": 0.72,
   "IAC": 0.68,
+  "ICH_norm": 0.65,
+  "IAC_norm": 0.61,
   "IVS": 0.59,
   "Brecha": -0.03,
+  "Brecha_norm_signed": -0.04,
+  "Brecha_norm": 0.48,
   "transferencia_cultural": 0.70,
   "pais_origen": "USA",
   "pais_origen_nombre": "U.S.A.",
@@ -170,8 +175,19 @@ También existen alias para aceptar entradas comunes como:
 
 ## Índices Calculados
 
-- `ICH`: índice de calidad heurística.
-- `IAC`: índice de alineación cultural.
+- `scoring_version`: versión del método de scoring (`v2` = índices normalizados disponibles y usados para interpretación).
+
+- `ICH`: índice heurístico legado (escala histórica).
+- `IAC`: índice cultural legado (puede superar 1 por diseño histórico).
+- `ICH_norm`: índice heurístico normalizado estricto 0-1.
+- `IAC_norm`: índice cultural normalizado estricto 0-1.
 - `IVS`: índice visual.
-- `Brecha`: diferencia entre UX base y UX ajustada culturalmente.
+- `Brecha`: diferencia legado entre IAC e ICH históricos.
+- `Brecha_norm_signed`: diferencia normalizada firmada (`IAC_norm - ICH_norm`) en rango -1 a 1.
+- `Brecha_norm`: versión no firmada de brecha normalizada en rango 0 a 1.
 - `transferencia_cultural`: similitud cultural entre país origen y país objetivo.
+
+Notas de versión:
+
+- `v1`: cálculo histórico con `ICH`, `IAC` y `Brecha` legacy.
+- `v2`: conserva campos legacy para compatibilidad y agrega `ICH_norm`, `IAC_norm`, `Brecha_norm_signed` y `Brecha_norm` para comparabilidad 0-1.

@@ -81,12 +81,16 @@ class HeuristicRecommender:
         heuristics = result.get("heuristics", {})
         visual = result.get("visual_analysis", {})
 
+        ich = result.get("ICH_norm", result.get("ICH"))
+        iac = result.get("IAC_norm", result.get("IAC"))
+        gap = result.get("Brecha_norm_signed", result.get("Brecha"))
+
         return {
             "scores": {
-                "ICH": result.get("ICH"),
-                "IAC": result.get("IAC"),
+                "ICH": ich,
+                "IAC": iac,
                 "IVS": result.get("IVS"),
-                "Brecha": result.get("Brecha"),
+                "Brecha": gap,
             },
             "pais_origen": result.get("pais_origen"),
             "pais_objetivo": result.get("pais_objetivo"),
@@ -119,10 +123,10 @@ class HeuristicRecommender:
             raise ValueError("quick_wins debe ser una lista")
 
     def _generate_static(self, result):
-        ich = self._safe_float(result.get("ICH"))
-        iac = self._safe_float(result.get("IAC"))
+        ich = self._safe_float(result.get("ICH_norm", result.get("ICH")))
+        iac = self._safe_float(result.get("IAC_norm", result.get("IAC")))
         ivs = self._safe_float(result.get("IVS"))
-        gap = self._safe_float(result.get("Brecha"))
+        gap = self._safe_float(result.get("Brecha_norm_signed", result.get("Brecha")))
 
         heuristics = result.get("heuristics", {})
         visual = result.get("visual_analysis", {})
