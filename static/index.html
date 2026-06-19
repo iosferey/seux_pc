@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEUX-PC | Evaluación de Alineación Cultural UX</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- ApexCharts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- BARRA LATERAL IZQUIERDA -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <i data-lucide="globe" class="logo-icon"></i>
+                <span class="logo-text">SEUX-PC</span>
+            </div>
+
+            <!-- Selector de Pestañas (Individual / Batch) -->
+            <div class="tabs-selector">
+                <button class="tab-btn active" id="btn-tab-single">
+                    <i data-lucide="search" class="tab-icon"></i>
+                    Individual
+                </button>
+                <button class="tab-btn" id="btn-tab-batch">
+                    <i data-lucide="layers" class="tab-icon"></i>
+                    En Lote (Batch)
+                </button>
+            </div>
+
+            <!-- Contenido Pestaña Individual -->
+            <div class="tab-content" id="panel-single">
+                <div class="input-group">
+                    <label for="input-url">URL del Sitio Web</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="link" class="input-icon"></i>
+                        <input type="text" id="input-url" placeholder="ejemplo.com" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="select-country">País Objetivo (Hofstede)</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="map-pin" class="input-icon"></i>
+                        <select id="select-country">
+                            <option value="">Detectar automáticamente</option>
+                            <!-- Se poblará vía API -->
+                        </select>
+                    </div>
+                </div>
+
+                <button class="action-btn" id="btn-run-analysis">
+                    <i data-lucide="play" class="btn-icon"></i>
+                    Analizar Sitio Web
+                </button>
+            </div>
+
+            <!-- Contenido Pestaña Batch -->
+            <div class="tab-content hidden" id="panel-batch">
+                <div class="batch-upload-area" id="drop-zone">
+                    <i data-lucide="upload-cloud" class="upload-icon"></i>
+                    <p class="upload-title">Arrastra tu archivo CSV aquí</p>
+                    <p class="upload-subtitle">O haz clic para buscarlo</p>
+                    <input type="file" id="batch-file-input" accept=".csv" class="hidden">
+                </div>
+
+                <div class="file-info hidden" id="batch-file-info">
+                    <i data-lucide="file-text" class="file-icon"></i>
+                    <div class="file-details">
+                        <span id="batch-filename">lote.csv</span>
+                        <span id="batch-filesize">0 KB</span>
+                    </div>
+                    <button class="btn-icon-only text-danger" id="btn-remove-file">
+                        <i data-lucide="trash-2"></i>
+                    </button>
+                </div>
+
+                <div class="input-group" style="margin-top: 15px;">
+                    <label for="select-country-batch">País Objetivo para el Lote</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="map-pin" class="input-icon"></i>
+                        <select id="select-country-batch">
+                            <option value="MEX">México (MEX)</option>
+                            <option value="auto">Detectar automáticamente por sitio</option>
+                            <!-- Se poblará vía API -->
+                        </select>
+                    </div>
+                </div>
+
+                <button class="action-btn" id="btn-run-batch" disabled>
+                    <i data-lucide="play-circle" class="btn-icon"></i>
+                    Iniciar Análisis en Lote
+                </button>
+            </div>
+
+            <!-- Historial -->
+            <div class="history-section">
+                <div class="section-title">
+                    <span>Historial de Análisis</span>
+                    <button class="btn-icon-only" id="btn-refresh-history" title="Actualizar historial">
+                        <i data-lucide="rotate-cw"></i>
+                    </button>
+                </div>
+                <div class="history-list" id="history-items">
+                    <!-- Se poblará dinámicamente -->
+                    <div class="history-empty">Cargando historial...</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- PANEL DE CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            <!-- Estado Inicial / Sin Resultados -->
+            <div class="welcome-screen" id="welcome-screen">
+                <div class="welcome-card">
+                    <i data-lucide="globe-2" class="welcome-logo"></i>
+                    <h1>Evaluación UX de Alineación Cultural</h1>
+                    <p>Introduce la URL de un sitio web para medir su compatibilidad heurística, visual y cultural según el modelo Hofstede y heurísticas de usabilidad.</p>
+                    <div class="welcome-features">
+                        <div class="feature-item">
+                            <i data-lucide="award"></i>
+                            <span>10 Heurísticas UX de Usabilidad</span>
+                        </div>
+                        <div class="feature-item">
+                            <i data-lucide="users"></i>
+                            <span>6 Dimensiones Culturales Hofstede</span>
+                        </div>
+                        <div class="feature-item">
+                            <i data-lucide="eye"></i>
+                            <span>Análisis Visual (Colores y Tipografías)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estado Cargando -->
+            <div class="loading-screen hidden" id="loading-screen">
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                    <h2 id="loading-text">Analizando sitio web...</h2>
+                    <p>Esto puede tardar entre 10 y 30 segundos mientras Playwright renderiza el sitio y OpenAI evalúa el contenido.</p>
+                </div>
+            </div>
+
+            <!-- Panel de Resultados de Batch -->
+            <div class="batch-results-screen hidden" id="batch-results-screen">
+                <div class="dashboard-header">
+                    <div>
+                        <span class="badge badge-success">Análisis en Lote Completado</span>
+                        <h1 id="batch-title">Resultado de Lote</h1>
+                    </div>
+                    <button class="btn-outline" id="btn-download-csv">
+                        <i data-lucide="download"></i>
+                        Descargar Resumen CSV
+                    </button>
+                </div>
+
+                <div class="summary-cards">
+                    <div class="card card-metric">
+                        <div class="metric-icon"><i data-lucide="list"></i></div>
+                        <div class="metric-info">
+                            <span class="metric-value" id="batch-metric-processed">0</span>
+                            <span class="metric-label">Sitios Procesados</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card grid-full-width">
+                    <h2 class="card-title">Detalle de Resultados del Lote</h2>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Sitio Web</th>
+                                    <th>Origen Detectado</th>
+                                    <th>País Objetivo</th>
+                                    <th>Calidad Heurística (ICH)</th>
+                                    <th>Alineación Cultural (IAC)</th>
+                                    <th>Índice Visual (IVS)</th>
+                                    <th>Brecha Cultural</th>
+                                </tr>
+                            </thead>
+                            <tbody id="batch-table-body">
+                                <!-- Se llena dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel de Resultados del Dashboard -->
+            <div class="dashboard-screen hidden" id="dashboard-screen">
+                <header class="dashboard-header">
+                    <div>
+                        <span class="badge" id="detected-badge">Detección Automática</span>
+                        <h1 id="evaluated-domain">ejemplo.com</h1>
+                        <p class="evaluated-date" id="evaluated-date">Evaluado hoy a las 12:00 PM</p>
+                    </div>
+                    <div class="countries-indicator">
+                        <div class="country-pill">
+                            <span class="country-pill-label">Origen</span>
+                            <strong id="display-origin-country">USA</strong>
+                        </div>
+                        <i data-lucide="arrow-right" class="arrow-icon"></i>
+                        <div class="country-pill pill-target">
+                            <span class="country-pill-label">Objetivo</span>
+                            <strong id="display-target-country">México</strong>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Sección de Puntuaciones Globales (Gauges) -->
+                <section class="scores-grid">
+                    <!-- Gauge ICH -->
+                    <div class="card score-card">
+                        <h3 class="score-card-title">Calidad Heurística</h3>
+                        <div id="chart-ich" class="gauge-chart"></div>
+                        <p class="score-card-desc">Evalúa la solidez funcional de la UX base del sitio.</p>
+                    </div>
+
+                    <!-- Gauge IAC -->
+                    <div class="card score-card">
+                        <h3 class="score-card-title">Alineación Cultural</h3>
+                        <div id="chart-iac" class="gauge-chart"></div>
+                        <p class="score-card-desc">Grado de acoplamiento a las expectativas del país objetivo.</p>
+                    </div>
+
+                    <!-- Gauge IVS -->
+                    <div class="card score-card">
+                        <h3 class="score-card-title">Índice Visual</h3>
+                        <div id="chart-ivs" class="gauge-chart"></div>
+                        <p class="score-card-desc">Densidad visual, balance de espacios en blanco y color.</p>
+                    </div>
+
+                    <!-- Tarjeta de Brecha -->
+                    <div class="card gap-card" id="gap-card-container">
+                        <h3 class="score-card-title">Brecha Cultural</h3>
+                        <div class="gap-value-container">
+                            <span class="gap-value" id="display-gap-value">0.00</span>
+                        </div>
+                        <div class="gap-status-badge" id="gap-status-badge">Sin impacto</div>
+                        <p class="score-card-desc">Diferencia entre la UX base y la UX adaptada culturalmente.</p>
+                    </div>
+                </section>
+
+                <!-- Segunda Sección: Radar Hofstede y Resumen de Recomendaciones -->
+                <section class="details-grid">
+                    <!-- Comparación Hofstede -->
+                    <div class="card chart-card">
+                        <h2 class="card-title">Dimensiones Culturales de Hofstede</h2>
+                        <div id="chart-radar" style="min-height: 450px;"></div>
+                        <div class="radar-legend-info">
+                            <small><strong>DP:</strong> Distancia al Poder | <strong>IND:</strong> Individualismo | <strong>EI:</strong> Evitación de Incertidumbre | <strong>OLP:</strong> Orientación Largo Plazo | <strong>LCS:</strong> Indulgencia vs Restricción | <strong>OGI:</strong> Masculinidad vs Feminidad</small>
+                        </div>
+                    </div>
+
+                    <!-- Recomendaciones Clave -->
+                    <div class="card recommendations-card">
+                        <h2 class="card-title">Recomendaciones Priorizadas</h2>
+                        <div class="recommendations-overview" id="recs-summary-text">
+                            Cargando sugerencias...
+                        </div>
+                        <div class="recs-list" id="recs-list-container">
+                            <!-- Se poblará dinámicamente -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tercera Sección: Tabs del Detalle (Heurísticas, Visuales) -->
+                <section class="tabs-section">
+                    <div class="details-tabs-header">
+                        <button class="details-tab-btn active" data-tab="tab-heuristics">
+                            <i data-lucide="check-square"></i>
+                            Puntuaciones Heurísticas
+                        </button>
+                        <button class="details-tab-btn" data-tab="tab-visuals">
+                            <i data-lucide="palette"></i>
+                            Análisis Visual y UI
+                        </button>
+                    </div>
+
+                    <!-- Tab Heurísticas -->
+                    <div class="details-tab-content active" id="tab-heuristics">
+                        <div class="heuristics-list" id="heuristics-detailed-list">
+                            <!-- Se poblará dinámicamente -->
+                        </div>
+                    </div>
+
+                    <!-- Tab Visuales -->
+                    <div class="details-tab-content" id="tab-visuals">
+                        <div class="visuals-tab-grid">
+                            <!-- Paleta de Colores -->
+                            <div class="visual-sub-card">
+                                <h3 class="visual-sub-card-title">Paleta de Colores Detectada</h3>
+                                <div class="color-palette-container" id="color-palette-list">
+                                    <!-- Swatches -->
+                                </div>
+                            </div>
+
+                            <!-- Tipografía -->
+                            <div class="visual-sub-card">
+                                <h3 class="visual-sub-card-title">Tipografía y Estructura</h3>
+                                <div class="typography-details">
+                                    <div class="typo-item">
+                                        <span class="typo-label">Total de Encabezados:</span>
+                                        <strong id="typo-val-total">0</strong>
+                                    </div>
+                                    <div class="heading-distribution">
+                                        <span class="heading-badge">H1: <span id="h-val-h1">0</span></span>
+                                        <span class="heading-badge">H2: <span id="h-val-h2">0</span></span>
+                                        <span class="heading-badge">H3: <span id="h-val-h3">0</span></span>
+                                        <span class="heading-badge">H4: <span id="h-val-h4">0</span></span>
+                                    </div>
+                                    <div class="typo-item" style="margin-top: 15px;">
+                                        <span class="typo-label">Familias de Fuentes:</span>
+                                        <span id="typo-val-families" class="text-muted">Ninguna detectada</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Distribución de Layout -->
+                            <div class="visual-sub-card">
+                                <h3 class="visual-sub-card-title">Distribución y Estructura</h3>
+                                <div class="layout-details">
+                                    <div class="layout-metric">
+                                        <span class="layout-metric-label">Elementos Totales (DOM)</span>
+                                        <strong class="layout-metric-value" id="layout-val-elements">0</strong>
+                                    </div>
+                                    <div class="layout-metric">
+                                        <span class="layout-metric-label">Relación de Espacios Libres</span>
+                                        <strong class="layout-metric-value" id="layout-val-whitespace">0%</strong>
+                                    </div>
+                                    <div class="layout-metric">
+                                        <span class="layout-metric-label">Densidad Visual</span>
+                                        <strong class="layout-metric-value" id="layout-val-density">0.00</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Componentes Clave -->
+                            <div class="visual-sub-card">
+                                <h3 class="visual-sub-card-title">Componentes Interactivos</h3>
+                                <div class="components-grid" id="components-summary-list">
+                                    <div class="comp-badge">
+                                        <i data-lucide="navigation"></i>
+                                        <span>Menú de Navegación:</span>
+                                        <strong id="comp-val-nav">No</strong>
+                                    </div>
+                                    <div class="comp-badge">
+                                        <i data-lucide="credit-card"></i>
+                                        <span>Formularios:</span>
+                                        <strong id="comp-val-form">0</strong>
+                                    </div>
+                                    <div class="comp-badge">
+                                        <i data-lucide="toggle-left"></i>
+                                        <span>Botones:</span>
+                                        <strong id="comp-val-button">0</strong>
+                                    </div>
+                                    <div class="comp-badge">
+                                        <i data-lucide="layout"></i>
+                                        <span>Tarjetas (Cards):</span>
+                                        <strong id="comp-val-card">0</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <!-- Application JS -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
