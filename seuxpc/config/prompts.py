@@ -34,6 +34,7 @@ Evalúa la prevención de errores, recuperación y claridad comunicativa.
 
 F_conexion_narrativa_simbolica:
 Evalúa la capacidad de la interfaz para transmitir la identidad de la marca, organización o autoría, el contexto de origen de su propuesta de valor y su significado simbólico para la audiencia.
+Referencia teórica (Donald Norman - Diseño Emocional): Este nivel reflexivo es donde el usuario piensa en el significado del objeto, su valor personal y la historia que cuenta. Evalúa si la interfaz permite al usuario conectar con la narrativa, propósito y autenticidad de la propuesta más allá de la funcionalidad.
 
 INSTRUCCIONES ESTRICTAS:
 
