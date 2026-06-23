@@ -1237,3 +1237,204 @@ body {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.8; transform: scale(1.05); }
 }
+
+/* ==========================================================================
+   MOBILE MENU BUTTON & OVERLAY
+   ========================================================================== */
+.mobile-menu-btn {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 1001;
+    background: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-sm);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-main);
+    transition: var(--transition-fast);
+}
+
+.mobile-menu-btn i {
+    width: 20px;
+    height: 20px;
+}
+
+.mobile-menu-btn:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-glow);
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+    backdrop-filter: blur(2px);
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* ==========================================================================
+   RESPONSIVE — TABLET (≤ 1024px)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .scores-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVE — MOBILE (≤ 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* Show hamburger, hide sidebar by default */
+    .mobile-menu-btn {
+        display: flex;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -340px;
+        top: 0;
+        height: 100vh;
+        z-index: 1000;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 300px;
+        box-shadow: var(--shadow-main);
+    }
+
+    .sidebar.open {
+        left: 0;
+    }
+
+    .main-content {
+        height: auto;
+        min-height: 100vh;
+        padding: 72px 16px 24px;
+    }
+
+    /* Dashboard header stacks vertically */
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 22px;
+    }
+
+    .countries-indicator {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Score grid: 1 column on small screens */
+    .scores-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Details grid: single column */
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Summary cards: 1 column */
+    .summary-cards {
+        grid-template-columns: 1fr;
+    }
+
+    /* Welcome features: 1 column */
+    .welcome-features {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome-card {
+        padding: 28px 20px;
+        margin: 16px;
+    }
+
+    .welcome-card h1 {
+        font-size: 22px;
+    }
+
+    /* Heuristics & visuals: single column */
+    .heuristics-list {
+        grid-template-columns: 1fr;
+    }
+
+    .visuals-tab-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Color palette: 2 cols instead of 3 */
+    .color-palette-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Details tab buttons: compact */
+    .details-tab-btn {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    /* Batch results table: allow horizontal scroll */
+    .table-responsive {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* History section: limit height more on mobile */
+    .history-section {
+        max-height: 30vh;
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVE — SMALL MOBILE (≤ 480px)
+   ========================================================================== */
+@media (max-width: 480px) {
+    .scores-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-header h1 {
+        font-size: 18px;
+    }
+
+    .card-title {
+        font-size: 15px;
+    }
+
+    .gauge-chart {
+        height: 140px;
+    }
+
+    .gap-value {
+        font-size: 30px;
+    }
+
+    .details-tab-btn span {
+        display: none;
+    }
+
+    .components-grid {
+        grid-template-columns: 1fr;
+    }
+}

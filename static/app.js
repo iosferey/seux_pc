@@ -2,6 +2,35 @@ document.addEventListener("DOMContentLoaded", () => {
     // Lucide Icons Initialization
     lucide.createIcons();
 
+    // ── Mobile sidebar toggle ──────────────────────────────────────────────
+    const sidebar = document.getElementById("sidebar");
+    const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+    const sidebarOverlay = document.getElementById("sidebar-overlay");
+
+    function openSidebar() {
+        sidebar.classList.add("open");
+        sidebarOverlay.classList.add("active");
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove("open");
+        sidebarOverlay.classList.remove("active");
+    }
+
+    mobileMenuBtn.addEventListener("click", () => {
+        sidebar.classList.contains("open") ? closeSidebar() : openSidebar();
+    });
+
+    sidebarOverlay.addEventListener("click", closeSidebar);
+
+    // Close sidebar when a tab or history item is tapped on mobile
+    document.querySelectorAll(".tab-btn, .history-item, .action-btn").forEach(el => {
+        el.addEventListener("click", () => {
+            if (window.innerWidth <= 768) closeSidebar();
+        });
+    });
+    // ──────────────────────────────────────────────────────────────────────
+
     // DOM Elements
     const btnTabSingle = document.getElementById("btn-tab-single");
     const btnTabBatch = document.getElementById("btn-tab-batch");

@@ -16,9 +16,17 @@
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
     <div class="app-container">
+        <!-- Botón hamburguesa (visible solo en móvil) -->
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Abrir menú">
+            <i data-lucide="menu"></i>
+        </button>
+
         <!-- BARRA LATERAL IZQUIERDA -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <div class="logo-area">
                 <i data-lucide="globe" class="logo-icon"></i>
                 <span class="logo-text">SEUX-PC</span>
