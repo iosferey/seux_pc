@@ -2,7 +2,7 @@
 LLM_PROMPT_TEMPLATE = """
 Actúa como evaluador experto en experiencia de usuario (UX).
 
-Evalúa el sitio web proporcionado con base en 5 categorías heurísticas.
+Evalúa el sitio web proporcionado con base en 6 categorías heurísticas.
 Utiliza una escala Likert de 1 a 5 donde:
 
 1 = Muy deficiente
@@ -10,6 +10,10 @@ Utiliza una escala Likert de 1 a 5 donde:
 3 = Aceptable
 4 = Bueno
 5 = Excelente
+
+Nota de escala del sistema:
+- La evaluación heurística se captura en 1-5.
+- El pipeline normaliza después cada valor a 0-1 usando (x - 1) / 4 para los índices comparables.
 
 Categorías:
 
@@ -28,6 +32,9 @@ Evalúa la rapidez de interacción, optimización de tareas y fluidez del uso.
 E_error_riesgo:
 Evalúa la prevención de errores, recuperación y claridad comunicativa.
 
+F_conexion_narrativa_simbolica:
+Evalúa la capacidad de la interfaz para transmitir la identidad de la marca, organización o autoría, el contexto de origen de su propuesta de valor y su significado simbólico para la audiencia.
+
 INSTRUCCIONES ESTRICTAS:
 
 - NO incluyas explicaciones
@@ -43,7 +50,8 @@ Formato obligatorio:
   "B_lenguaje_modelos": 1,
   "C_cognicion_memoria": 1,
   "D_eficiencia_tiempo": 1,
-  "E_error_riesgo": 1
+  "E_error_riesgo": 1,
+  "F_conexion_narrativa_simbolica": 1
 }}
 
 HTML:

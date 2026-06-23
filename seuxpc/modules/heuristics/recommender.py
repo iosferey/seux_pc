@@ -207,6 +207,7 @@ class HeuristicRecommender:
             "C_cognicion_memoria": "Reducir carga cognitiva con pasos guiados, chunks y estado visible.",
             "D_eficiencia_tiempo": "Optimizar recorridos de alta frecuencia y minimizar pasos redundantes.",
             "E_error_riesgo": "Incluir validacion preventiva y mensajes de error accionables.",
+            "F_conexion_narrativa_simbolica": "Integrar narrativa de origen, autoria y valor simbolico en homepage, producto y microcopys.",
         }
 
         for key, recommendation in catalog.items():

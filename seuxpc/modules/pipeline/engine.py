@@ -65,7 +65,8 @@ class SEUXPC:
                 "B_lenguaje_modelos": 3,
                 "C_cognicion_memoria": 3,
                 "D_eficiencia_tiempo": 3,
-                "E_error_riesgo": 3
+                "E_error_riesgo": 3,
+                "F_conexion_narrativa_simbolica": 3
             }
 
         # ---------------------------

@@ -654,7 +654,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "B_lenguaje_modelos": "Uso de un vocabulario, modelos conceptuales y metáforas alineadas con las convenciones locales del usuario.",
             "C_cognicion_memoria": "Reducción de la carga cognitiva, legibilidad visual clara y retención de información simple para el usuario.",
             "D_eficiencia_tiempo": "Optimización del tiempo, fluidez en la consecución de tareas y atajos rápidos sin fricción.",
-            "E_error_riesgo": "Prevención proactiva de errores, tolerancia en entradas de datos e instrucciones claras de recuperación."
+            "E_error_riesgo": "Prevención proactiva de errores, tolerancia en entradas de datos e instrucciones claras de recuperación.",
+            "F_conexion_narrativa_simbolica": "Capacidad de la interfaz para transmitir identidad de marca, organización o autoría, contexto de origen y valor simbólico de la propuesta."
         };
 
         const displayNames = {
@@ -662,7 +663,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "B_lenguaje_modelos": "Lenguaje y Modelos",
             "C_cognicion_memoria": "Cognición y Memoria",
             "D_eficiencia_tiempo": "Eficiencia de Tiempo",
-            "E_error_riesgo": "Prevención de Errores"
+            "E_error_riesgo": "Prevención de Errores",
+            "F_conexion_narrativa_simbolica": "Conexión Narrativa y Simbólica"
         };
 
         container.innerHTML = "";
